@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Ledger & Rapor - SMKN 1 Maluku Tengah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001f3f 0%, #003d7a 30%, #0059b3 60%, #ffd700 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .guide-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 215, 0, 0.9);
+            color: #001f3f;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+        }
+
+        .guide-button:hover {
+            background: rgba(255, 215, 0, 1);
+            transform: scale(1.05);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            min-height: 600px;
+            margin-top: 60px;
+        }
+
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #001f3f 0%, #003d7a 50%, #ffd700 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 30px;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: white;
+            padding: 10px;
+            object-fit: contain;
+        }
+
+        .left-panel h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .left-panel p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .icon-lock {
+            font-size: 60px;
+            margin: 30px 0;
+        }
+
+        .right-panel {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h2 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #003d7a;
+            box-shadow: 0 0 0 3px rgba(0, 61, 122, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #999;
+        }
+
+        .role-select {
+            margin-bottom: 25px;
+        }
+
+        .role-select select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .role-select select:focus {
+            border-color: #003d7a;
+            box-shadow: 0 0 0 3px rgba(0, 61, 122, 0.1);
+        }
+
+        .class-display {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f7 100%);
+            border: 2px solid #003d7a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .class-display-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .class-display-icon {
+            font-size: 24px;
+        }
+
+        .class-display-text {
+            flex: 1;
+        }
+
+        .class-display-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .class-display-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #003d7a;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #001f3f 0%, #003d7a 50%, #ffd700 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 61, 122, 0.4);
+        }
+
+        .btn-login:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .forgot-password {
+            text-align: center;
+            color: #003d7a;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .forgot-password:hover {
+            color: #ffd700;
+        }
+
+        .security-notice {
+            background: #f8f9fa;
+            border-left: 4px solid #003d7a;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }
+
+        .security-notice p {
+            color: #555;
+            font-size: 12px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: white;
+            font-size: 13px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+            border-left: 4px solid #c33;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #2a7;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+            border-left: 4px solid #2a7;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #001f3f 0%, #003d7a 50%, #ffd700 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px 15px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #ffd700;
+            transform: scale(1.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .modal-body h3 {
+            color: #001f3f;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 20px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 8px;
+        }
+
+        .modal-body h4 {
+            color: #003d7a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .modal-body ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        .modal-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .modal-body table th,
+        .modal-body table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .modal-body table th {
+            background: #003d7a;
+            color: white;
+            font-weight: 600;
+        }
+
+        .modal-body table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .highlight-box {
+            background: #fff9e6;
+            border-left: 4px solid #ffd700;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                min-height: auto;
+                margin-top: 80px;
+            }
+
+            .left-panel {
+                padding: 30px 20px;
+            }
+
+            .left-panel h1 {
+                font-size: 22px;
+            }
+
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+
+            .icon-lock {
+                font-size: 40px;
+                margin: 20px 0;
+            }
+
+            .right-panel {
+                padding: 30px 20px;
+            }
+
+            .back-button,
+            .guide-button {
+                position: static;
+                margin: 5px;
+                display: inline-block;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .modal-body table {
+                font-size: 12px;
+            }
+
+            .modal-body table th,
+            .modal-body table td {
+                padding: 8px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://alexbahy-tech.github.io/smartkurikulumsmkn1mt/" class="back-button">← Kembali ke SmartKurikulum Center</a>
+    <button class="guide-button" onclick="openModal()">📖 Panduan Penggunaan</button>
+
+    <div class="container">
+        <div class="left-panel">
+            <img src="https://iili.io/feI8iaj.md.png" alt="Logo SMKN 1 Maluku Tengah" class="logo">
+            <h1>🔐 Portal Ledger & Rapor</h1>
+            <p>Sistem Akses Aman Data Akademik Kelas</p>
+            <div class="icon-lock">📘</div>
+        </div>
+
+        <div class="right-panel">
+            <div class="login-header">
+                <h2>Selamat Datang</h2>
+                <p>Akses Data Nilai dan Rapor Kelas</p>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <form id="loginForm">
+                <div class="form-group role-select">
+                    <label>👤 Role Pengguna</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🧑‍💼</span>
+                        <select id="roleSelect" required>
+                            <option value="">-- Pilih Role --</option>
+                            <option value="wali">Wali Kelas</option>
+                            <option value="admin">Admin Kurikulum</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>👤 Username</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="username" placeholder="Masukkan username (NIP)" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🔒 Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" placeholder="Masukkan password" required>
+                    </div>
+                </div>
+
+                <div id="classDisplay" class="class-display">
+                    <div class="class-display-content">
+                        <div class="class-display-icon">📚</div>
+                        <div class="class-display-text">
+                            <div class="class-display-label">Kelas yang Anda ampu:</div>
+                            <div class="class-display-name" id="className">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="btnLogin">Masuk</button>
+                <a href="#" class="forgot-password">Lupa Password?</a>
+
+                <div class="security-notice">
+                    <p>
+                        🔐 <strong>Data dilindungi dan hanya dapat diakses oleh pengguna berwenang.</strong>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>SMKN 1 Maluku Tengah</strong></p>
+        <p>© 2026 Sistem Informasi Akademik</p>
+    </div>
+
+    <div id="guideModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>📘 Panduan Lengkap Penggunaan Portal Ledger & Rapor</h2>
+            </div>
+            <div class="modal-body">
+                <h3>🔑 TAHAP 1: LOGIN KE SISTEM</h3>
+                
+                <h4>A. Username untuk Wali Kelas:</h4>
+                <ul>
+                    <li><strong>Menggunakan NIP</strong> masing-masing guru wali kelas</li>
+                    <li><strong>Bagi guru tanpa NIP:</strong> gunakan format <code>walkes_x...</code> (huruf kecil semua)</li>
+                    <li>Contoh: <code>walkes_ulp</code>, <code>walkes_tjkt2</code></li>
+                </ul>
+
+                <h4>B. Data Login Wali Kelas:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kelas</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>X MPLB</td><td>197811202008012018</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>X AKL</td><td>197208192003122010</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>X PMS</td><td>198004072005012016</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>X ULP</td><td>walkes_ulp</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>X TJKT 1</td><td>198304262011011007</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>X TJKT 2</td><td>walkes_tjkt2</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>X TK 1</td><td>199402202020121003</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>X TK 2</td><td>197604072022211008</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XI MPLB</td><td>198606052024211003</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XI AKL</td><td>197902242009042001</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XI PMS</td><td>19800410202212022</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XI ULP</td><td>199111122023212034</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XI TJKT 1</td><td>197202182006042014</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XI TJKT 2</td><td>198005182009041001</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XI TK</td><td>199704272024211004</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XII MPLB</td><td>198804202019032021</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XII AKL</td><td>19860121202212037</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XII PMS</td><td>196701262000082001</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XII ULP</td><td>1983011920082014</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XII TJKT</td><td>198005162009042008</td><td>SMKBisaHebat</td></tr>
+                        <tr><td>XII TK</td><td>197507282007012012</td><td>SMKBisaHebat</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <strong>🔐 Admin Kurikulum:</strong><br>
+                    Username: <code>197408262003121005</code><br>
+                    Password: <code>SMKBisaHebat</code><br>
+                    <em>Admin dapat melihat persentase semua kelas dan mengakses ke semua kelas</em>
+                </div>
+
+                <h3>📊 TAHAP 2: MENGGUNAKAN DASHBOARD E-RAPOR</h3>
+                
+                <h4>1. Memilih Mode Kerja</h4>
+                <p>Aplikasi memiliki 2 mode yang bisa dipilih:</p>
+                <ul>
+                    <li><strong>Mode Rapor:</strong> Untuk mengelola data rapor siswa</li>
+                    <li><strong>Mode Identitas Siswa:</strong> Untuk mengelola data identitas siswa</li>
+                </ul>
+
+                <h4>2. Mengatur Filter Data</h4>
+                <p>Pilih parameter berikut untuk menampilkan data yang diinginkan:</p>
+                <ul>
+                    <li><strong>Tahun Pelajaran:</strong> Pilih antara TP 2025/2026, TP 2026/2027, atau TP 2027/2028</li>
+                    <li><strong>Semester:</strong> Pilih Ganjil atau Genap</li>
+                    <li>Klik tombol <strong>"Cek Status"</strong> untuk memuat data</li>
+                </ul>
+
+                <h4>3. Memeriksa Status Ledger</h4>
+                <p>Setelah mengklik "Cek Status", sistem akan menampilkan:</p>
+                <ul>
+                    <li><strong>Kelengkapan Rapor:</strong> Jumlah siswa yang sudah lengkap rapornya dan persentase</li>
+                    <li><strong>Kelengkapan Identitas:</strong> Jumlah siswa yang sudah lengkap identitasnya dan persentase</li>
+                </ul>
+
+                <h3>➕ TAHAP 3: MENGELOLA DATA SISWA</h3>
+                
+                <h4>Menambah Data Siswa</h4>
+                <ul>
+                    <li>Klik tombol <strong>"Tambah Siswa"</strong> di bagian bawah</li>
+                    <li>Form input akan muncul</li>
+                    <li>Isi data siswa yang diperlukan</li>
+                    <li>Klik <strong>"SIMPAN"</strong> untuk menyimpan atau <strong>"BATAL"</strong> untuk membatalkan</li>
+                </ul>
+
+                <h3>🔄 TAHAP 4: SINKRONISASI DATABASE</h3>
+                <ul>
+                    <li>Sistem akan otomatis melakukan sinkronisasi database</li>
+                    <li>Status sinkronisasi ditampilkan di layar</li>
+                </ul>
+
+                <h3>🚪 TAHAP 5: KELUAR DARI APLIKASI</h3>
+                <ul>
+                    <li>Klik tombol <strong>"Keluar Aplikasi"</strong> di menu samping untuk logout</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>⚠️ PENTING:</strong><br>
+                    • Jangan bagikan password Anda kepada siapapun<br>
+                    • Selalu logout setelah selesai menggunakan sistem<br>
+                    • Gunakan browser modern (Chrome, Firefox, Safari, Edge)<br>
+                    • Aplikasi dapat diakses melalui laptop maupun smartphone
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loginData = {
+            wali: {
+                '197811202008012018': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X MPLB',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-dan-rapor-xmplb/'
+                },
+                '197208192003122010': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X AKL',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xakl/'
+                },
+                '198004072005012016': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X PMS',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-dan-rapor-xpms/'
+                },
+                'walkes_ulp': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X ULP',
+                    url: 'https://alexbahy-tech.github.io/ledger-dan-rapor-XULP/'
+                },
+                '198304262011011007': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X TJKT 1',
+                    url: 'https://alexbahy-tech.github.io/ledger-dan-rapor-XTJKT1/'
+                },
+                'walkes_tjkt2': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X TJKT 2',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xitjkt2/'
+                },
+                '199402202020121003': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X TK 1',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-XTK1/'
+                },
+                '197604072022211008': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'X TK 2',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xtk2/'
+                },
+                '198606052024211003': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XI MPLB',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-XIMPLB3/'
+                },
+                '197902242009042001': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XI AKL',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiakl/'
+                },
+                '19800410202212022': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XI PMS',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xipms/'
+                },
+                '199111122023212034': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XI ULP',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiulp/'
+                },
+                '197202182006042014': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XI TJKT 1',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xitjkt1/'
+                },
+                '198005182009041001': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XI TJKT 2',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xitjkt2/'
+                },
+                '199704272024211004': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XI TK',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xitk/'
+                },
+                '198804202019032021': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XII MPLB',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiimplb/'
+                },
+                '19860121202212037': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XII AKL',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiiakl/'
+                },
+                '196701262000082001': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XII PMS',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiipms/'
+                },
+                '1983011920082014': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XII ULP',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiiulp/'
+                },
+                '198005162009042008': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XII TJKT',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiitjkt/'
+                },
+                '197507282007012012': {
+                    password: 'SMKBisaHebat',
+                    kelas: 'XII TK',
+                    url: 'https://alexbahy-tech.github.io/sistem-upload-ledger-rapor-xiitk/'
+                }
+            },
+            admin: {
+                '197408262003121005': {
+                    password: 'SMKBisaHebat',
+                    url: 'https://alexbahy-tech.github.io/porta-admin-kurikulum/'
+                }
+            }
+        };
+
+        const roleSelect = document.getElementById('roleSelect');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const classDisplay = document.getElementById('classDisplay');
+        const className = document.getElementById('className');
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        function validateAndShowClass() {
+            const role = roleSelect.value;
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            classDisplay.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            if (!role || !username || !password) {
+                return;
+            }
+
+            if (role === 'wali') {
+                const userData = loginData.wali[username];
+                
+                if (userData && password === userData.password) {
+                    className.textContent = userData.kelas;
+                    classDisplay.style.display = 'block';
+                }
+            }
+        }
+
+        roleSelect.addEventListener('change', validateAndShowClass);
+        usernameInput.addEventListener('input', validateAndShowClass);
+        passwordInput.addEventListener('input', validateAndShowClass);
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const role = roleSelect.value;
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            if (!role) {
+                showError('Silakan pilih role pengguna terlebih dahulu!');
+                return;
+            }
+
+            if (role === 'wali') {
+                const userData = loginData.wali[username];
+                
+                if (userData && password === userData.password) {
+                    showSuccess(`Login berhasil! Mengakses kelas ${userData.kelas}...`);
+                    setTimeout(() => {
+                        window.location.href = userData.url;
+                    }, 1500);
+                } else {
+                    showError('Username atau password salah!');
+                }
+            } else if (role === 'admin') {
+                const userData = loginData.admin[username];
+                
+                if (userData && password === userData.password) {
+                    showSuccess('Login berhasil! Mengakses portal admin...');
+                    setTimeout(() => {
+                        window.location.href = userData.url;
+                    }, 1500);
+                } else {
+                    showError('Username atau password salah!');
+                }
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+        }
+
+        function openModal() {
+            document.getElementById('guideModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('guideModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('guideModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
